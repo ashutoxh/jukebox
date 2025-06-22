@@ -8,3 +8,18 @@ docker run --rm -it -p 8011:8081 -e ASPNETCORE_HTTP_PORTS=8081 dinonu/rockstarmv
 
 Then, open browser at http://localhost:8011/RockStar/Faith?api=http://localhost:8010/rockstar/faith
 click Get Lyrics button
+
+docker build \                                                           ─╯
+-f jukeboxapi/Dockerfile \
+-t 680604704378.dkr.ecr.us-east-1.amazonaws.com/rockstar/api:dev \   
+./jukeboxapi
+
+docker build \                                                           ─╯
+-f jukeboxmvc/Dockerfile \
+-t 680604704378.dkr.ecr.us-east-1.amazonaws.com/rockstar/webapp:dev \
+./jukeboxmvc
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 680604704378.dkr.ecr.us-east-1.amazonaws.com
+
+docker push 680604704378.dkr.ecr.us-east-1.amazonaws.com/rockstar/api:dev
+docker push 680604704378.dkr.ecr.us-east-1.amazonaws.com/rockstar/webapp:dev
